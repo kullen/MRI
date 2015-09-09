@@ -62,7 +62,7 @@ public class GridControlView extends View implements ChangeListener {
 	{
 		playButton = new JButton();
         playButton.addActionListener(this);
-        playButton.setPreferredSize(new Dimension(50, 20));
+        playButton.setPreferredSize(new Dimension(100, 20));
         playButton.setBorderPainted(true);
 		playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		changeButtonState();
@@ -93,13 +93,13 @@ public class GridControlView extends View implements ChangeListener {
     	{
     		//Set to not pressed
     		playButton.setActionCommand("PLAY");
-            playButton.setText(">");
+            playButton.setText("▶");
     	}
     	else
     	{
     		//Set to pressed
     		playButton.setActionCommand("STOP");
-            playButton.setText("[ ]");
+            playButton.setText("❚❚");
     	}
     	buttonPressed = !buttonPressed;
     }

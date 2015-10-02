@@ -167,10 +167,11 @@ public final class ContourCalc {
       		  controlPoints.get(i).setTensionY(tensionPoints.get(0).getY());
       		  controlPoints.get(i).setTensionX2(tensionPoints.get(1).getX());
       		  controlPoints.get(i).setTensionY2(tensionPoints.get(1).getY());   		  
-      	  }      	  
+      	  }      	
+      	  curvePoints.clear();
+      	  curvePoints.add(controlPoints.get(i));
       	  //generate points for every segment of the curve
-      	  curvePoints = genCurve(controlPoints.get(i), controlPoints.get(i + 1));
-      	  
+      	  curvePoints.addAll(genCurve(controlPoints.get(i), controlPoints.get(i + 1)));
       	  //add the segment to the contour
       	  generatedPoints.addAll(curvePoints);
         }
@@ -183,8 +184,12 @@ public final class ContourCalc {
 	        controlPoints.get(controlPoints.size() - 1).setTensionX2(tensionPoints.get(1).getX());
 	        controlPoints.get(controlPoints.size() - 1).setTensionY2(tensionPoints.get(1).getY());
         }
+        curvePoints.clear();
+        //curvePoints.add(controlPoints.get(controlPoints.size() - 1));
         //final curve from the last point to the initial point
         curvePoints = genCurve(controlPoints.get(controlPoints.size() - 1), controlPoints.get(0));
+        //attempt to close loop
+        curvePoints.add(controlPoints.get(0));
         
         generatedPoints.addAll(curvePoints);
         return generatedPoints;
@@ -353,19 +358,19 @@ public final class ContourCalc {
  		double distanceCX = b.getX() - a.getTensionX2();
  		double distanceCY = b.getY() - a.getTensionY2();
  		   
-     	for(int j = 0; j < 99; j++) {
+     	for(int j = 0; j < 10; j++) {
      	   
      		//calculates the point j% along the line from the first control point to the first tension point
-     		double aX = a.getX() + (j * (distanceAX/100));
-     		double aY = a.getY() + (j * (distanceAY/100));
+     		double aX = a.getX() + (j * (distanceAX/10));
+     		double aY = a.getY() + (j * (distanceAY/10));
      		   
      		//calculates the point j% along the line from the first tension point to the second tension point
-     		double bX = a.getTensionX() + (j * (distanceBX/100));
-     		double bY = a.getTensionY() + (j * (distanceBY/100));
+     		double bX = a.getTensionX() + (j * (distanceBX/10));
+     		double bY = a.getTensionY() + (j * (distanceBY/10));
      		
      		//calculates the point j% along the line from the second tension point to the second control point
-     		double cX = a.getTensionX2() + (j * (distanceCX/100));
-     		double cY = a.getTensionY2() + (j * (distanceCY/100));
+     		double cX = a.getTensionX2() + (j * (distanceCX/10));
+     		double cY = a.getTensionY2() + (j * (distanceCY/10));
      	  
      		//calculates the distance for the first inner line
      		double distancePX = bX - aX; 
@@ -376,20 +381,20 @@ public final class ContourCalc {
      		double distanceQY = cY - bY;
      	   
      		//calculates the point j% along the first inner line
-     		double pX = aX + (j * (distancePX/100));
-     		double pY = aY + (j * (distancePY/100));
+     		double pX = aX + (j * (distancePX/10));
+     		double pY = aY + (j * (distancePY/10));
      		
      		//calculates the point j% along the second inner line
-     		double qX = bX + (j * (distanceQX/100));
-     		double qY = bY + (j * (distanceQY/100));
+     		double qX = bX + (j * (distanceQX/10));
+     		double qY = bY + (j * (distanceQY/10));
 
      		//calculates the distance for the last inner line
      		double distanceFX = qX - pX;
      		double distanceFY = qY - pY;
      		
      		//calculates the final point j% on the inner line
-     		double fX = pX + (j * (distanceFX/100));
-     		double fY = pY + (j * (distanceFY/100));
+     		double fX = pX + (j * (distanceFX/10));
+     		double fY = pY + (j * (distanceFY/10));
      		
      		bezierPoints.add(new Vector3d(fX, fY, 0));
      	}   

@@ -137,7 +137,6 @@ public final class ContourCalc {
 //    }
 
     public static List<Vector3d> generate(List<Vector3d> controlPoints, boolean isClosed) {
-    	
         if (controlPoints == null) {
       	  throw new NullPointerException("List cannot be null");
         }
@@ -184,14 +183,16 @@ public final class ContourCalc {
 	        controlPoints.get(controlPoints.size() - 1).setTensionX2(tensionPoints.get(1).getX());
 	        controlPoints.get(controlPoints.size() - 1).setTensionY2(tensionPoints.get(1).getY());
         }
-        curvePoints.clear();
-        //curvePoints.add(controlPoints.get(controlPoints.size() - 1));
-        //final curve from the last point to the initial point
-        curvePoints = genCurve(controlPoints.get(controlPoints.size() - 1), controlPoints.get(0));
-        //attempt to close loop
-        curvePoints.add(controlPoints.get(0));
-        
-        generatedPoints.addAll(curvePoints);
+        if(isClosed) {
+	        curvePoints.clear();
+	        //curvePoints.add(controlPoints.get(controlPoints.size() - 1));
+	        //final curve from the last point to the initial point
+	        curvePoints = genCurve(controlPoints.get(controlPoints.size() - 1), controlPoints.get(0));
+	        //attempt to close loop
+	        curvePoints.add(controlPoints.get(0));
+	        
+	        generatedPoints.addAll(curvePoints);
+        }
         return generatedPoints;
         
     }
